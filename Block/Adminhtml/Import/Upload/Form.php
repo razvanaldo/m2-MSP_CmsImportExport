@@ -110,8 +110,14 @@ class Form extends Generic
             ]
         );
 
-        $stores = $this->storeRepositoryInterface->getList();
+        $stores = $this->storeRepositoryInterface
+            ->getList();
+        $processedStores = [];
         foreach ($stores as $storeInterface) {
+            if (in_array($storeInterface->getCode(), $processedStores)) {
+                continue;
+            }
+            $processedStores[] = $storeInterface->getCode();
             $fieldsetStores->addField(
                 'store_map:'.$storeInterface->getCode(),
                 'text',
